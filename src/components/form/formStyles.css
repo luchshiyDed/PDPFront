@@ -1,0 +1,7 @@
+.form {
+    display: grid;
+    grid-template-columns: auto;
+  }
+  .formElement{
+    padding: 20px;
+  }

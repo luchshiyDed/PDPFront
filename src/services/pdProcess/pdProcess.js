@@ -1,0 +1,30 @@
+export default class PdProcess{
+    constructor([id=null,pdName="",pddName="",tName="",ispdnName="",icopdName="",trgts="",acts="",sbjcts="",date="4444-03-21",source="",dest="",eName="",prdName="",tp=false,pdtName="",sName=""]){
+        this.id=id;
+        this.name=pdName;
+        var tmp=trgts.split(",");
+        tmp.pop();
+        this.pdTargets=[];
+        tmp.map(e=>{this.pdTargets.push({name:e})})
+        tmp=sbjcts.split(",");
+        tmp.pop();
+        this.pdSubjects=[];
+        tmp.map(e=>{this.pdSubjects.push({name:e})});
+        tmp=acts.split(",");
+        tmp.pop();
+        this.pdProcessActions=[];
+        tmp.map(e=>{this.pdProcessActions.push({name:e})});
+        this.deleteDate=date;
+        this.source=source;
+        this.destination=dest;
+        this.employee={email:eName};
+        this.pdRegDoc={name:prdName};
+        this.thirdPeople=tp;
+        this.pdProcessType={name:pdtName};
+        this.pdStorage={name:sName};
+        this.pdDocument={name:pddName};
+        this.pdType={name:tName};
+        this.ispdn={name:ispdnName};
+        this.icopd={name:icopdName};
+    }
+}

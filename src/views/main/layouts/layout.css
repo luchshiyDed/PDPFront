@@ -1,0 +1,26 @@
+.topnav {
+    overflow: hidden;
+    background-color: #333;
+    padding: 0px 0px 20px;
+    display: grid;
+  }
+  .topnav a{
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px 20px;
+    text-decoration: none;
+  }
+  .topnav a.logic {
+    float: left;
+  }
+
+  .topnav a.login{
+    float: right;
+  }
+ 
+
+  .topnav a:hover {
+    background-color: #ddd;
+    color: black;
+  }
