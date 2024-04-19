@@ -8,7 +8,7 @@ return <div className="topnav">
         <Link to="/AWP" className="logic">АРМ</Link>
         <Link to="/ICOPD" className="logic">ИКОПД</Link>
         <Link to="/ISPDN" className="logic">ИСПДн</Link>
-        <Link to="/users" className="logic">пользователи</Link>
+        {localStorage["role"]==="ADMIN"&&<Link to="/users" className="logic">пользователи</Link>}
         <Link to="/reports" className="logic">отчеты</Link>
         <Link to="/login" className="login" >login</Link>
        

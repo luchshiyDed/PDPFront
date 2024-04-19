@@ -33,6 +33,14 @@ const useStyles = makeStyles({
     },
 });
 const fetchAddr="/AWP";
+const deleteEntity=async (id)=>{
+    try {
+        let responce= await api.delete(fetchAddr+'/delete'+'/'+id); 
+        
+    } catch (error) {
+        
+    }
+}
 const fetchDat= async ()=>{
     const responce = await api.get(fetchAddr);
     return responce.data;//.then(data=>{resp=data;});
@@ -136,6 +144,7 @@ export default function AWPData(){
  
     const handleRemoveClick = (i) => {
         const list = [...rows];
+        deleteEntity(rows[i].id);
         list.splice(i, 1);
         setRows(list);
         setShowConfirm(false);
@@ -233,7 +242,7 @@ export default function AWPData(){
                                 ):null}
                             </div>
                         ) : (
-                            <div>
+                            localStorage["role"]&&!(localStorage["role"]==="VIEWER")&&<div>
                                 <Button onClick={handleAdd}>
                                     <AddBoxIcon onClick={handleAdd} />
                                     ADD
