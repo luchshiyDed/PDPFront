@@ -6,7 +6,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import "./dialog.css";
-export default function FormDialog({name:name="Noname",values:vals=[],onClose:closeFunc=()=>{}}){
+export default function FormDialog({id:id=null,name:name="Noname",values:vals=[],onClose:closeFunc=()=>{}}){
   const [state, setState] = useState({
     open: false
   });
@@ -43,7 +43,7 @@ export default function FormDialog({name:name="Noname",values:vals=[],onClose:cl
 
     return (
       <div>
-        <Button onClick={handleClickOpen}>{getText()}</Button>
+        <Button id={id} onFocus={handleClickOpen} onClick={handleClickOpen}>{getText()}</Button>
         {state.open && (
           <Dialog
             open={true}

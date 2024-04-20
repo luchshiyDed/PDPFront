@@ -55,10 +55,9 @@ const sendDat=async (dat)=>{
 }
 const parseOne=(i)=>{
     for(const [key, value] of Object.entries(i)){
-        if(value===null&& !(key==="id"))
+        if(value===null&& !(key==="id") )
             i[key]={name:""};
      }
-     console.log(i);
     return i;
 }
 const parseResponce=(res)=>{
@@ -123,7 +122,6 @@ export default function PdData(){
         const list = [...rows];
         
         const { name, value } = e.target;
-        
         if(level===2)
             list[index][name][l2Name] = value;
         else
@@ -217,7 +215,7 @@ export default function PdData(){
             return str;
           }  
         if(isArray){
-            return isEdit?<TableCell key={i*rowNames.length+j} component="th" scope="row" align="center"><FormDialog name={name} values={val} onClose={(e)=>{rows[i][name]=e}}/></TableCell>:<TableCell key={i*rowNames.length+j} component="th" scope="row" align="center">{getText(val)}</TableCell>
+            return isEdit?<TableCell key={i*rowNames.length+j} component="th" scope="row" align="center"><FormDialog id={i*rowNames.length+j}  name={name} values={val} onClose={(e)=>{rows[i][name]=e}}/></TableCell>:<TableCell key={i*rowNames.length+j} component="th" scope="row" align="center">{getText(val)}</TableCell>
         }
         return isEdit?<TableCell key={i*rowNames.length+j} component="th" scope="row" align="center"> 
         <input 
@@ -245,9 +243,9 @@ defualtCell(i,j++,source,"source"),defualtCell(i,j++,dest,"destination"),defualt
 id ={i*rowNames.length+j}
 name={"thirdPeople"}
 onKeyDown={handleEnter}
-value={tp}
-onChange={(row) => 
-handleInputChange(row, i)}/></TableCell>:<TableCell key={i*rowNames.length+j++} component="th" scope="row" align="center">{tp}</TableCell>,
+checked={tp}
+onChange={(e) => 
+{let list=[...rows]; list[i][e.target.name]=e.target.checked; setRows(list);}}/></TableCell>:<TableCell key={i*rowNames.length+j++} component="th" scope="row" align="center">{tp.toString()}</TableCell>,
 defualtCell(i,j++,pdtName,"pdProcessType",2),defualtCell(i,j++,sName,"pdStorage",2)];
 
     return arr;

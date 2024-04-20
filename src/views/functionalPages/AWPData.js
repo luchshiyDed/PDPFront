@@ -32,7 +32,7 @@ const useStyles = makeStyles({
         bottom: "104px",
     },
 });
-const fetchAddr="/AWP";
+const fetchAddr="/awp";
 const deleteEntity=async (id)=>{
     try {
         let responce= await api.delete(fetchAddr+'/delete'+'/'+id); 
@@ -55,11 +55,11 @@ const sendDat=async (dat)=>{
 }
 const parseOne=(i)=>{
     for(const [key, value] of Object.entries(i)){
-        i[key]=value?value:"";
+        if(value===null&& !(key==="id") )
+            i[key]={name:""};
      }
     return i;
 }
-
 const parseResponce=(res)=>{
     var arr=[];
     res.map(i=>{  
@@ -177,7 +177,7 @@ export default function AWPData(){
               return str;
             }  
           if(isArray){
-              return isEdit?<TableCell key={i*rowNames.length+j} component="th" scope="row" align="center"><FormDialog name={name} values={val} onClose={(e)=>{rows[i][name]=e}}/></TableCell>:<TableCell key={i*rowNames.length+j} component="th" scope="row" align="center">{getText(val)}</TableCell>
+              return isEdit?<TableCell key={i*rowNames.length+j} component="th" scope="row" align="center"><FormDialog id={i*rowNames.length+j} name={name} values={val} onClose={(e)=>{rows[i][name]=e}}/></TableCell>:<TableCell key={i*rowNames.length+j} component="th" scope="row" align="center">{getText(val)}</TableCell>
           }
           return isEdit?<TableCell key={i*rowNames.length+j} component="th" scope="row" align="center"> 
           <input 

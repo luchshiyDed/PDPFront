@@ -1,6 +1,6 @@
 import {React,useState} from 'react';
 
-import { redirect } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import './Login.css';
 const fetchAddr=process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_PORT+"/auth"
 
@@ -8,6 +8,7 @@ const fetchAddr=process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_PORT+"/au
 const Login = () => {
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
+  let auth=false;
 
   const handleLogin = async () => {
     try {
@@ -23,6 +24,9 @@ const Login = () => {
       const token = data.token;
       localStorage.setItem("JWT",token);
       localStorage.setItem("role",data.role);
+      if(localStorage['token']){
+        auth=true;
+      }
     } catch (error) {
       console.error('Error logging in:', error);
     }

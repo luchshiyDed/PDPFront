@@ -31,36 +31,25 @@ const useStyles = makeStyles({
         bottom: "104px",
     },
 });
-const fetchAddr='/ICOPD';
+const fetchAddr='/auth';
 const fetchDat= async ()=>{
     
-    const responce = await api.get(fetchAddr);
-    return responce.data;//.then(data=>{resp=data;});
-}
-const sendDat=async (dat)=>{
-    try {
-      let responce=await api.post(fetchAddr+'/editMany', dat);  
-    } catch (error) {
-        
-    }
-    
+    const responce = await api.get(fetchAddr+"/users");
+    return responce.data;
 }
 const parseOne=(i)=>{
     for(const [key, value] of Object.entries(i)){
-        if(value===null&& !(key==="id") )
-            i[key]={name:""};
+        i[key]=value?value:"";
      }
     return i;
 }
-const createICOPD=([id=null,name="",sdName="",awp=[],date="4444-03-21"])=>{
+const createUser=([id="",name="",sdName="",role="VIEWER",allSubdivisions=false])=>{
     return{
         id:id,
         name: name,
-        subdivision:{
-            name:sdName
-        },
-        awps:awp,
-        activationDate:date,
+        allSubdivisions:allSubdivisions,
+        subdivision:sdName,
+        role:role
     }
 }
 const parseResponce=(res)=>{
@@ -82,10 +71,9 @@ const deleteEntity=async (id)=>{
     }
 }
 
-export default function ICOPDData(){
-    const sendData= sendDat;
+export default function UsersData(){
     const fetchData=fetchDat;
-    const rowNames=["id","Имя","подразделение","АРМ","Дата активации"]
+    const rowNames=["id","Логин","Подразделение","Полный доступ","Роль"]
     const classes =useStyles();
     const [rows, setRows] = useState([]);
     
@@ -96,7 +84,6 @@ export default function ICOPDData(){
       }, []);
     const [open, setOpen] = React.useState(false);
     const [isEdit, setEdit] = React.useState(false);
-    const [disable, setDisable] = React.useState(true);
     const [showConfirm, setShowConfirm] = React.useState(false);
  
     const handleClose = (event, reason) => {
@@ -106,52 +93,11 @@ export default function ICOPDData(){
         setOpen(false);
     };
  
-    const handleAdd = () => {
-        var newRow=parseOne(createICOPD([]));
-        setRows([
-            ...rows,
-            newRow,
-        ]);
-        setDisable(false);
-        setEdit(true);
-        
-    };
- 
-    const handleEdit = (i) => {
-        setEdit(!isEdit);
-        setDisable(false);
-    };
- 
-    const handleSave = () => {
-        setEdit(!isEdit);
-        setRows(rows);
-        console.log("saved : ", rows);
-        setDisable(true);
-        setOpen(true);
-        sendData(rows);
-    };
- 
-    const handleInputChange = (e, index,level=1,l2Name="name",isArray=false) => {
-        const list = [...rows];
-        const { name, value } = e.target;
-        if(level===2)
-            list[index][name][l2Name] = value;
-        else
-            list[index][name]=value;
-        setRows(list);
-        
-    };
- 
- 
-    const handleConfirm = () => {
-        setShowConfirm(true);
-    };
  
     const handleRemoveClick = (i) => {
         const list = [...rows];
         deleteEntity(rows[i].id);
         list.splice(i, 1);
-
         setRows(list);
         setShowConfirm(false);
     };
@@ -160,28 +106,16 @@ export default function ICOPDData(){
         setShowConfirm(false);
     };
 
-    const handleEnter=(event)=> {
-        if (event.code=== "Enter"){
-            var prevId=Number(event.target.id)
-            if(prevId%rowNames.length==rowNames.length-1){
-                handleSave()
-                return
-            }
-            event.preventDefault();
-            document.getElementById(prevId+1).focus();
-        };
-    }
+
     
 
     const createTableCells=(row,i)=>{
         const {
             id:id,
             name: name,
-            subdivision:{
-                name:sdName
-            },
-            awps:awp,
-            activationDate:date,
+            subdivision:sdName,
+            allSubdivisions:allSubdivisions,
+            role:role,
         }=row;
         const defualtCell=(i,j,val,name="name",level=1,l2Name="name",isArray=false)=>{
 
@@ -194,28 +128,13 @@ export default function ICOPDData(){
           if(isArray){
               return isEdit?<TableCell key={i*rowNames.length+j} component="th" scope="row" align="center"><FormDialog id={i*rowNames.length+j} name={name} values={val} onClose={(e)=>{rows[i][name]=e}}/></TableCell>:<TableCell key={i*rowNames.length+j} component="th" scope="row" align="center">{getText(val)}</TableCell>
           }
-          return isEdit?<TableCell key={i*rowNames.length+j} component="th" scope="row" align="center"> 
-          <input 
-          id ={i*rowNames.length+j}
-          name={name}
-          onKeyDown={handleEnter}
-          value={val}
-          onChange={(row) => 
-          handleInputChange(row, i,level,l2Name,isArray)}/></TableCell>:<TableCell key={i*rowNames.length+j} component="th" scope="row" align="center">{val}</TableCell>
+          return <TableCell key={i*rowNames.length+j} component="th" scope="row" align="center">{val}</TableCell>
           }
         let j=-1;
         let arr=[
             <TableCell key={i*rowNames.length+j++} component="th" scope="row" align="center">{id}</TableCell>,defualtCell(i,j++,name),
-            defualtCell(i,j++,sdName,"subdivision",2),defualtCell(i,j++,awp,"awps",2,"name",true),isEdit?<TableCell key={i*rowNames.length+j++} component="th" scope="row" align="center"> 
-            <input type="date"
-            id ={i*rowNames.length+j}
-            name={"activationDate"}
-            onKeyDown={handleEnter}
-            value={date}
-            onChange={(row) => 
-            handleInputChange(row, i)}/></TableCell>:<TableCell key={i*rowNames.length+j++} component="th" scope="row" align="center">{date}</TableCell>
-            
-        ];
+            defualtCell(i,j++,sdName,"subdivision"),defualtCell(i,j++,allSubdivisions,"allSubdivisions"),defualtCell(i,j++,role,"role")
+            ];
        
         return arr;
     }
@@ -233,43 +152,6 @@ export default function ICOPDData(){
                 </Alert>
             </Snackbar>
                 <div style={{ display: "flex", justifyContent: "space-between" }}>
-                    <div>
-                        {isEdit ? (
-                            <div>
-                                <Button onClick={handleAdd}>
-                                    <AddBoxIcon onClick={handleAdd} />
-                                    ADD
-                                </Button>
-                                {rows.length !== 0 ? (
-                                    <div>
-                                        {disable ? (
-                                            <Button disabled align="right"
-                                                             onClick={handleSave}>
-                                                <DoneIcon />
-                                                SAVE
-                                            </Button>
-                                        ) : (
-                                            <Button align="right" onClick={handleSave}>
-                                                <DoneIcon />
-                                                SAVE
-                                            </Button>
-                                        )}
-                                    </div>
-                                ):null}
-                            </div>
-                        ) : (
-                            localStorage["role"]&&!(localStorage["role"]==="VIEWER")&&<div>
-                                <Button onClick={handleAdd}>
-                                    <AddBoxIcon onClick={handleAdd} />
-                                    ADD
-                                </Button>
-                                <Button onClick={handleEdit}>
-                                    <CreateIcon />
-                                    EDIT
-                                </Button>
-                            </div>
-                        )}
-                    </div>
                 </div>
                 <Table
                     className={classes.table}
@@ -286,18 +168,6 @@ export default function ICOPDData(){
                                     <TableRow key={i}>
                                         
                                         {createTableCells(row,i)}
-                                        {isEdit ? (
-                                            
-                                            <TableCell><Button key={i} className="mr10"
-                                                     onClick={handleConfirm}>
-                                                <ClearIcon />
-                                            </Button></TableCell>
-                                        ) : (
-                                            <TableCell><Button key={i} className="mr10"
-                                                    onClick={handleConfirm}>
-                                                <DeleteOutlineIcon />
-                                            </Button></TableCell>
-                                        )}
                                         {showConfirm && (
                                             <div>
                                                 <Dialog

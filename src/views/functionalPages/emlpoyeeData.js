@@ -58,8 +58,10 @@ const deleteEntity=async (id)=>{
 }
 const parseOne=(i)=>{
     for(const [key, value] of Object.entries(i)){
-        i[key]=value?value:"";
+        if(value===null&& !(key==="id") )
+            i[key]={name:""};
      }
+
     const{
         id:id,
         name: name,
@@ -116,12 +118,14 @@ export default function EmployeeData(){
     const classes =useStyles();
     const [rows, setRows] = useState([]);
     
+    const [open, setOpen] = React.useState(false);
+
     useEffect(() => {
         fetchData()
           .then(res => {setRows(parseResponce(res));})
           .catch(error => {});
-      }, []);
-    const [open, setOpen] = React.useState(false);
+      }, [open]);
+   
     const [isEdit, setEdit] = React.useState(false);
     const [disable, setDisable] = React.useState(true);
     const [showConfirm, setShowConfirm] = React.useState(false);
@@ -148,6 +152,7 @@ export default function EmployeeData(){
         setEdit(!isEdit);setDisable(false);
     };
  
+   
     const handleSave = () => {
         setEdit(!isEdit);
         setRows(rows);
@@ -156,7 +161,6 @@ export default function EmployeeData(){
         setOpen(true);
         sendData(rows);
     };
- 
     const handleInputChange = (e, index) => {
         setDisable(false);
         const { name, value } = e.target;
