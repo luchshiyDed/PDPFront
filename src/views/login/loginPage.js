@@ -33,7 +33,7 @@ const Login = () => {
   };
 
   return (
-    <div>
+    <div className='login-wrapper'>
       <input
         type="text"
         placeholder="Username"
@@ -46,7 +46,7 @@ const Login = () => {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
-      <button onClick={handleLogin}>Login</button>
+      <button className='submit' onClick={handleLogin}>Submit</button>
     </div>
   );
 };

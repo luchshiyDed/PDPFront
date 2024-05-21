@@ -6,10 +6,10 @@ return <div className="topnav">
         <Link to="/pdData" className="logic">процессы</Link>
         <Link to="/employee" className="logic">сотрудники</Link>
         <Link to="/AWP" className="logic">АРМ</Link>
-        <Link to="/ICOPD" className="logic">ИКОПД</Link>
         <Link to="/ISPDN" className="logic">ИСПДн</Link>
-        {localStorage["role"]==="ADMIN"&&<Link to="/users" className="logic">пользователи</Link>}
-        <Link to="/reports" className="logic">отчеты</Link>
+        {localStorage["role"]==="ADMIN"&&<Link to="/users" className="logic">Пользователи</Link>}
+        <Link to="/reports" className="logic">Отчеты</Link>
+        <Link to="/reportsCreate" className="logic">Конструктор</Link>
         <Link to="/login" className="login" >login</Link>
        
     </nav>

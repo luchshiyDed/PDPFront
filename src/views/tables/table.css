@@ -1,0 +1,13 @@
+.tableHead:hover {
+    background-color: #333;
+    color: #ddd;
+}
+.MuiTableCell-head {
+
+    border-bottom-width: 7px !important;
+    border-bottom-color: #333 !important;
+
+}
+.table-body .row:nth-child(2n){
+    background-color:  #e3cdcd;
+}

@@ -1,6 +1,26 @@
 .login-wrapper{
-    background-color: #f2f2f2;
+    background-color: #e3cdcd;
     padding: 0px 0px 20px;
     color: black;
     text-align: center;
+    display: grid;
+    justify-content: center;
+    
+}
+.login-wrapper *{
+    margin-bottom: 1cm;
+    margin-top: 1cm;
+    padding: 25px 10px 7.5px;
+    font-weight: 250;
+    font-size: 1.5em;
+    border-radius: 5px;
+
+    border: none;
+    outline: none;
+}
+.submit{
+    background-color:#76a87f ;
+}
+.submit:hover{
+    background-color: #80c85a;
 }
